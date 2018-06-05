@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Reservas;
 use app\models\ReservasSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,6 +25,18 @@ class ReservasController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+
+            'access' => [
+                'class' => AccessControl::className(),
+                //'only' => ['index', 'view'],
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
