@@ -11,6 +11,8 @@ use Yii;
  * @property string $nombre
  * @property string $dni
  * @property string $password
+ *
+ * @property Reservas[] $reservas
  */
 class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -45,6 +47,15 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'dni' => 'Dni',
             'password' => 'Contraseña',
         ];
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReservas()
+    {
+        return $this->hasMany(Reservas::className(), ['usuario_id' => 'id']);
     }
 
 

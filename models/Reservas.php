@@ -10,6 +10,8 @@ use Yii;
  * @property int $id
  * @property int $usuario_id
  * @property string $fecha
+ *
+ * @property Usuarios $usuario
  */
 class Reservas extends \yii\db\ActiveRecord
 {
@@ -31,6 +33,7 @@ class Reservas extends \yii\db\ActiveRecord
             [['usuario_id'], 'integer'],
             [['fecha'], 'safe'],
             [['fecha'], 'unique'],
+            [['usuario_id'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_id' => 'id']],
         ];
     }
 
@@ -44,5 +47,13 @@ class Reservas extends \yii\db\ActiveRecord
             'usuario_id' => 'Usuario ID',
             'fecha' => 'Fecha',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuario()
+    {
+        return $this->hasOne(Usuarios::className(), ['id' => 'usuario_id']);
     }
 }

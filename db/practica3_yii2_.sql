@@ -12,6 +12,6 @@ DROP TABLE IF EXISTS reservas;
 
 CREATE TABLE reservas (
     id           BIGSERIAL     PRIMARY KEY
-  , usuario_id   BIGINT
+  , usuario_id   BIGINT        REFERENCES usuarios (id)
   , fecha        TIMESTAMP(0)  UNIQUE
 );
