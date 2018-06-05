@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use function var_dump;
 use Yii;
 use yii\base\Model;
 
@@ -13,7 +14,7 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    public $username;
+    public $dni;
     public $password;
     public $rememberMe = true;
 
@@ -27,7 +28,7 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['dni', 'password'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
@@ -66,16 +67,17 @@ class LoginForm extends Model
     }
 
     /**
-     * Finds user by [[username]]
+     * Finds user by [[dni]]
      *
      * @return User|null
      */
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = Usuarios::findOne([
+                'dni' => $this->dni
+            ]);
         }
-
         return $this->_user;
     }
 }

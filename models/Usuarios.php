@@ -12,7 +12,7 @@ use Yii;
  * @property string $dni
  * @property string $password
  */
-class Usuarios extends \yii\db\ActiveRecord
+class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -43,7 +43,61 @@ class Usuarios extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nombre' => 'Nombre',
             'dni' => 'Dni',
-            'password' => 'Password',
+            'password' => 'Contraseña',
         ];
+    }
+
+
+    /*****************************    LOGIN   **************************/
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+    }
+
+    /**
+     * Compara si la cadena pasada como parámetro coincide con la
+     * contraseña de este usuario.
+     * @param  string $password La contraseña a validar.
+     * @return bool             Devuelve true si es válida.
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword(
+            $password,
+            $this->password
+        );
     }
 }
