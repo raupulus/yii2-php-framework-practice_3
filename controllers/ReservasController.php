@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use function var_dump;
 use Yii;
 use app\models\Reservas;
 use app\models\ReservasSearch;
@@ -33,7 +34,7 @@ class ReservasController extends Controller
                 //'only' => ['index', 'view'],
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index', 'delete', 'create', 'view'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -77,15 +78,25 @@ class ReservasController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Reservas();
+        $model = new Reservas([
+            'usuario_id' => Yii::$app->user->identity->id
+        ]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (($post = Yii::$app->request->post()) && (isset($post['fecha']))) {
+            $model->fecha = $post['fecha'];
         }
 
+        if ($model->save()) {
+            return $this->redirect(['index']);
+        }
+
+        //var_dump($model);die();
+
+        /*
         return $this->render('create', [
             'model' => $model,
         ]);
+        */
     }
 
     /**

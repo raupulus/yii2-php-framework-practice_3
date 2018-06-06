@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use DateInterval;
+use DateTime;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -41,6 +43,12 @@ class ReservasSearch extends Reservas
      */
     public function search($params)
     {
+        $hoy = new DateTime('now');
+        $hoy->setTime('00', '00', '00');
+
+        $semana = new DateTime('now');
+        $semana->add(new DateInterval('P7D'));
+
         $query = Reservas::find();
 
         // add conditions that should always apply here
@@ -57,12 +65,22 @@ class ReservasSearch extends Reservas
             return $dataProvider;
         }
 
+        // Fecha superior a hoy
+        $query->where([
+            '>=', 'fecha', $hoy->format('Y-m-d H:i:s')
+        ]);
+
+        // Fecha inferior a 7 días
+        $query->andwhere([
+            '<=', 'fecha', $semana->format('Y-m-d H:i:s')
+        ]);
+
+
         // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
+        /*$query->andFilterWhere([
             'usuario_id' => $this->usuario_id,
             'fecha' => $this->fecha,
-        ]);
+        ]);*/
 
         return $dataProvider;
     }
