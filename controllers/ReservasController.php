@@ -126,9 +126,10 @@ class ReservasController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($fecha)
     {
-        $this->findModel($id)->delete();
+        (Reservas::findOne(['fecha' => $fecha]))->delete();
+        //$this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }

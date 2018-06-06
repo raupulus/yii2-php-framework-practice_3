@@ -66,11 +66,10 @@ $this->params['breadcrumbs'][] = $this->title;
         $cita = $dia->setTime($hora, '00')->format('Y-m-d H:i:s');
 
         if (in_array($cita, $misReservas)) {
-            return HTML::a('Anular', ['reservas/delete'], [
+            return HTML::a('Anular', ['reservas/delete', 'fecha' => $cita], [
                 'class' => 'btn btn-xs btn-danger',
                 'data' => [
                     'method' => 'post',
-                    'params' => ['fecha' => $cita],
                 ],
             ]);
         } elseif (in_array($cita, $reservas)) {
